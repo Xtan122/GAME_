@@ -6,6 +6,9 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "character.h"
+
+
+
 struct Sprite {
     SDL_Texture* texture;
     std::vector<SDL_Rect> clips;
@@ -33,6 +36,22 @@ struct Sprite {
 };
 
 
+struct ScrollingGround {
+    SDL_Texture* texture;
+    int scrollingOffset = 0;
+    int width, height;
+
+    void setTexture(SDL_Texture* _texture) {
+        texture = _texture;
+        SDL_QueryTexture(texture, NULL, NULL, &width, &height);
+    }
+
+    void scroll(int distance) {
+        scrollingOffset -= distance;
+        if( scrollingOffset < 0 ) { scrollingOffset = width; }
+    }
+};
+
 struct ScrollingBackground {
     SDL_Texture* texture;
     int scrollingOffset = 0;
@@ -48,6 +67,7 @@ struct ScrollingBackground {
         if( scrollingOffset < 0 ) { scrollingOffset = width; }
     }
 };
+
 
 struct Graphics {
     SDL_Renderer *renderer;
@@ -80,12 +100,19 @@ struct Graphics {
 
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
         SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        if (TTF_Init() == -1) {
+            logErrorAndExit("SDL_ttf could not initialize! SDL_ttf Error: ",
+                             TTF_GetError());
+        }
+
     }
 
     void prepareScene()
     {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
+
     }
 
 	void prepareScene(SDL_Texture * background)
@@ -111,24 +138,15 @@ struct Graphics {
         return texture;
     }
 
-    void renderTexture(SDL_Texture *texture, int x, int y, int width = 0, int height = 0)
+      void renderTexture(SDL_Texture *texture, int x, int y)
     {
         SDL_Rect dest;
 
         dest.x = x;
         dest.y = y;
+        SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
 
-        if(width == 0 && height == 0){
-            SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
-
-            SDL_RenderCopy(renderer, texture, NULL, &dest);
-        }else{
-         dest.w = width;
-         dest.h = height;
-         SDL_Rect src  = { 0, 0, width, height};
-         SDL_RenderCopy(renderer, texture, &src, &dest);
-        }
-
+        SDL_RenderCopy(renderer, texture, NULL, &dest);
     }
 
     void blitRect(SDL_Texture *texture, SDL_Rect *src, int x, int y)
@@ -145,15 +163,45 @@ struct Graphics {
 
     void quit()
     {
+        TTF_Quit();
         IMG_Quit();
 
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
         SDL_Quit();
     }
+
+    TTF_Font* loadFont(const char* path, int size)
+    {
+        TTF_Font* gFont = TTF_OpenFont( path, size );
+        if (gFont == nullptr) {
+            SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Load font %s", TTF_GetError());
+        }
+    }
+    SDL_Texture* renderText(const char* text, TTF_Font* font, SDL_Color textColor)
+    {
+        SDL_Surface* textSurface = TTF_RenderText_Solid( font, text, textColor );
+        if( textSurface == nullptr ) {
+            SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Render text surface %s", TTF_GetError());
+            return nullptr;
+        }
+
+        SDL_Texture* texture = SDL_CreateTextureFromSurface( renderer, textSurface );
+        if( texture == nullptr ) {
+            SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Create texture from text %s", SDL_GetError());
+        }
+
+        SDL_FreeSurface( textSurface );
+        return texture;
+    }
+    void render(const ScrollingGround& ground) {
+        renderTexture(ground.texture, ground.scrollingOffset, 0);
+        renderTexture(ground.texture, ground.scrollingOffset - ground.width, 0);
+
+    }
     void render(const ScrollingBackground& background) {
         renderTexture(background.texture, background.scrollingOffset, 0);
-        renderTexture(background.texture, background.scrollingOffset - background.width, 0);
+        renderTexture(background.texture, background.scrollingOffset, 0);
     }
     void render(int x, int y, Sprite& sprite) {
         SDL_Rect* clip = sprite.getCurrentClip();
@@ -161,7 +209,10 @@ struct Graphics {
         SDL_RenderCopy(renderer, sprite.texture, clip, &renderQuad);
     }
 
+
 };
+
+
 
 
 

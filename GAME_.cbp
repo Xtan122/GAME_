@@ -32,10 +32,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="boss.h" />
 		<Unit filename="character.h" />
 		<Unit filename="defs.h" />
 		<Unit filename="enemy.h" />
 		<Unit filename="grp.h" />
+		<Unit filename="logic.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />

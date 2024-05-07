@@ -21,17 +21,13 @@ struct Enemy{
     int type;
     SDL_Rect* rect;
 
-
-
-
-
     Enemy(int _type = 0) {
         posX = 0;
         posY = 0;
         E_WIDTH = 0;
         E_HEIGHT = 0;
         type = _type;
-        srand(time(NULL));
+
         if (type == IN_AIR_ENEMY) {
 
             posX = rand() % (SCREEN_WIDTH + ENEMY_POSITION_RANGE) + SCREEN_WIDTH;

@@ -13,25 +13,24 @@
 #define RUN 0
 
 
-struct Sprite;
 struct Character
 {
-    static const int JUMP_SPEED = 30;
-    static const int FALL_SPEED = 30;
+    static const int JUMP_SPEED = 15;
+    static const int FALL_SPEED = 15;
+    static const int MOVE_SPEED = 5;
 
     int posX;
     int posY;
     int status;
+
     SDL_Texture* texture;
     SDL_Rect* rect;
-
-
-
     Character()
     {
         posX = SCREEN_WIDTH - 700;
         posY = GROUND;
         status = 0;
+
         texture = nullptr;
 
     }
@@ -47,29 +46,31 @@ struct Character
         return posY == GROUND;
     }
 
-    void HandleEvent(SDL_Event& e)
+   void HandleEvent(SDL_Event& e)
+{
+    if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
     {
-        if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+        switch (e.key.keysym.scancode)
         {
-            switch (e.key.keysym.scancode)
+            case SDL_SCANCODE_SPACE :
             {
-                case SDL_SCANCODE_UP:
+                if (OnGround())
                 {
-                    if (OnGround())
-                    {
-                        status = JUMP;
-
-                    }
+                    status = JUMP;
                 }
+
             }
+
         }
     }
+}
 
-    void Move()
+
+    void Jump()
     {
         if (status == JUMP && posY >= MAX_HEIGHT)
         {
-            posY += -JUMP_SPEED;
+            posY -= JUMP_SPEED;
         }
         if (posY <= MAX_HEIGHT)
         {
@@ -80,6 +81,11 @@ struct Character
             posY += FALL_SPEED;
         }
     }
+    void MoveRight()
+    {
+        if(status == RUN) posX += MOVE_SPEED;
+    }
+
     //bool Touch(const Enemy& enemy){
         //return CheckCollision(characterrect, enemy.rect);
     //}
@@ -96,63 +102,116 @@ struct Character
 
 
 };
-bool CheckColission(Character character,
-	SDL_Rect* char_clip,
-	Enemy enemy,
-	SDL_Rect* enemy_clip)
+//bool CheckColission(Character character,
+//	SDL_Rect* char_clip,
+//	Enemy enemy,
+//	SDL_Rect* enemy_clip)
+//{
+//	bool collide = false;
+//
+//	int left_a = character.GetPosX();
+//	int right_a = character.GetPosX() + char_clip->w;
+//	int top_a = character.GetPosY();
+//	int bottom_a = character.GetPosY() + char_clip->h;
+//
+//	if (enemy.GetType() == ON_GROUND_ENEMY)
+//	{
+//		const int TRASH_PIXEL_1 = 25;
+//		const int TRASH_PIXEL_2 = 30;
+//
+//		int left_b = enemy.GetPosX();
+//		int right_b = enemy.GetPosX() + enemy.GetWidth();
+//		int top_b = enemy.GetPosY();
+//		int bottom_b = enemy.GetPosY() + enemy.GetHeight();
+//
+//		if (right_a - TRASH_PIXEL_1 >= left_b && left_a + TRASH_PIXEL_1 <= right_b)
+//		{
+//			if (bottom_a - TRASH_PIXEL_2 >= top_b)
+//			{
+//				collide = true;
+//			}
+//		}
+//	}
+//	else
+//	{
+//		const int TRASH_PIXEL_1 = 22;
+//		const int TRASH_PIXEL_2 = 18;
+//
+//		int left_b = enemy.GetPosX() + TRASH_PIXEL_1;
+//		int right_b = enemy.GetPosX() + enemy_clip->w - TRASH_PIXEL_1;
+//		int top_b = enemy.GetPosY();
+//		int bottom_b = enemy.GetPosY() + enemy_clip->h - TRASH_PIXEL_2;
+//
+//		if (right_a >= left_b && left_a <= right_b)
+//		{
+//			if (top_a <= bottom_b && top_a >= top_b)
+//			{
+//				collide = true;
+//			}
+//
+//			if (bottom_a >= bottom_b && bottom_a <= top_b)
+//			{
+//				collide = true;
+//			}
+//		}
+//	}
+//
+//	return collide;
+//}
+//
+bool CheckCollision(Character& character, SDL_Rect& char_clip, Enemy& enemy, SDL_Rect& enemy_clip)
 {
-	bool collide = false;
+    bool collide = false;
 
-	int left_a = character.GetPosX();
-	int right_a = character.GetPosX() + char_clip->w;
-	int top_a = character.GetPosY();
-	int bottom_a = character.GetPosY() + char_clip->h;
+    int left_a = character.GetPosX();
+    int right_a = character.GetPosX() + char_clip.w;
+    int top_a = character.GetPosY();
+    int bottom_a = character.GetPosY() + char_clip.h;
 
-	if (enemy.GetType() == ON_GROUND_ENEMY)
-	{
-		const int TRASH_PIXEL_1 = 25;
-		const int TRASH_PIXEL_2 = 30;
+    if (enemy.GetType() == ON_GROUND_ENEMY)
+    {
+        const int TRASH_PIXEL_1 = 25;
+        const int TRASH_PIXEL_2 = 30;
 
-		int left_b = enemy.GetPosX();
-		int right_b = enemy.GetPosX() + enemy.GetWidth();
-		int top_b = enemy.GetPosY();
-		int bottom_b = enemy.GetPosY() + enemy.GetHeight();
+        int left_b = enemy.GetPosX();
+        int right_b = enemy.GetPosX() + enemy.GetWidth();
+        int top_b = enemy.GetPosY();
+        int bottom_b = enemy.GetPosY() + enemy.GetHeight();
 
-		if (right_a - TRASH_PIXEL_1 >= left_b && left_a + TRASH_PIXEL_1 <= right_b)
-		{
-			if (bottom_a - TRASH_PIXEL_2 >= top_b)
-			{
-				collide = true;
-			}
-		}
-	}
-	else
-	{
-		const int TRASH_PIXEL_1 = 22;
-		const int TRASH_PIXEL_2 = 18;
+        if (right_a - TRASH_PIXEL_1 >= left_b && left_a + TRASH_PIXEL_1 <= right_b)
+        {
+            if (bottom_a - TRASH_PIXEL_2 >= top_b)
+            {
+                collide = true;
+            }
+        }
+    }
+    else
+    {
+        const int TRASH_PIXEL_1 = 22;
+        const int TRASH_PIXEL_2 = 18;
 
-		int left_b = enemy.GetPosX() + TRASH_PIXEL_1;
-		int right_b = enemy.GetPosX() + enemy_clip->w - TRASH_PIXEL_1;
-		int top_b = enemy.GetPosY();
-		int bottom_b = enemy.GetPosY() + enemy_clip->h - TRASH_PIXEL_2;
+        int left_b = enemy.GetPosX() + TRASH_PIXEL_1;
+        int right_b = enemy.GetPosX() + enemy_clip.w - TRASH_PIXEL_1;
+        int top_b = enemy.GetPosY();
+        int bottom_b = enemy.GetPosY() + enemy_clip.h - TRASH_PIXEL_2;
 
-		if (right_a >= left_b && left_a <= right_b)
-		{
-			if (top_a <= bottom_b && top_a >= top_b)
-			{
-				collide = true;
-			}
+        if (right_a >= left_b && left_a <= right_b)
+        {
+            if (top_a <= bottom_b && top_a >= top_b)
+            {
+                collide = true;
+            }
 
-			if (bottom_a >= bottom_b && bottom_a <= top_b)
-			{
-				collide = true;
-			}
-		}
-	}
+            if (bottom_a >= bottom_b && bottom_a <= top_b)
+            {
+                collide = true;
+            }
+        }
+    }
 
-	return collide;
+    return collide;
 }
-
 
 
 

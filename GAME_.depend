@@ -1,24 +1,25 @@
 # depslib dependency file v1.0
-1714908309 source:f:\bt 01 - hk2\game_\main.cpp
+1715079331 source:f:\bt 01 - hk2\game_\main.cpp
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
+	<SDL_ttf.h>
 	"defs.h"
 	"grp.h"
 	"character.h"
 	"enemy.h"
 	"logic.h"
 
-1714796013 f:\bt 01 - hk2\game_\defs.h
+1715079804 f:\bt 01 - hk2\game_\defs.h
 
-1714906212 f:\bt 01 - hk2\game_\grp.h
+1715079913 f:\bt 01 - hk2\game_\grp.h
 	<vector>
 	"defs.h"
 	<SDL.h>
 	<SDL_image.h>
 	"character.h"
 
-1714922144 f:\bt 01 - hk2\game_\character.h
+1715026030 f:\bt 01 - hk2\game_\character.h
 	<SDL_image.h>
 	"defs.h"
 	"grp.h"
@@ -26,12 +27,12 @@
 	"logic.h"
 	<iostream>
 
-1714903721 f:\bt 01 - hk2\game_\enemy.h
+1715006495 f:\bt 01 - hk2\game_\enemy.h
 	"defs.h"
 	<cstdlib>
 	<ctime>
 
-1714922144 f:\bt 01 - hk2\game_\logic.h
+1715007735 f:\bt 01 - hk2\game_\logic.h
 	"character.h"
 	"enemy.h"
 
