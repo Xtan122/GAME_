@@ -105,7 +105,10 @@ struct Graphics {
             logErrorAndExit("SDL_ttf could not initialize! SDL_ttf Error: ",
                              TTF_GetError());
         }
-
+        if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ) {
+            logErrorAndExit( "SDL_mixer could not initialize! SDL_mixer Error: %s\n",
+                    Mix_GetError() );
+        }
     }
 
     void prepareScene()
@@ -163,6 +166,7 @@ struct Graphics {
 
     void quit()
     {
+        Mix_Quit();
         TTF_Quit();
         IMG_Quit();
 
@@ -177,6 +181,7 @@ struct Graphics {
         if (gFont == nullptr) {
             SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Load font %s", TTF_GetError());
         }
+        return gFont;
     }
     SDL_Texture* renderText(const char* text, TTF_Font* font, SDL_Color textColor)
     {
@@ -200,13 +205,47 @@ struct Graphics {
 
     }
     void render(const ScrollingBackground& background) {
-        renderTexture(background.texture, background.scrollingOffset, 0);
-        renderTexture(background.texture, background.scrollingOffset, 0);
+        renderTexture(background.texture, background.scrollingOffset , 0);
+        renderTexture(background.texture, background.scrollingOffset - background.width, 0);
     }
     void render(int x, int y, Sprite& sprite) {
         SDL_Rect* clip = sprite.getCurrentClip();
         SDL_Rect renderQuad = {x, y, clip->w, clip->h};
         SDL_RenderCopy(renderer, sprite.texture, clip, &renderQuad);
+    }
+    Mix_Music *loadMusic(const char* path)
+    {
+        Mix_Music *gMusic = Mix_LoadMUS(path);
+        if (gMusic == nullptr) {
+            SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION,
+                           SDL_LOG_PRIORITY_ERROR,
+                "Could not load music! SDL_mixer Error: %s", Mix_GetError());
+        }
+        return gMusic;
+    }
+    void play(Mix_Music *gMusic)
+    {
+        if (gMusic == nullptr) return;
+
+        if (Mix_PlayingMusic() == 0) {
+            Mix_PlayMusic( gMusic, -1 );
+        }
+        else if( Mix_PausedMusic() == 1 ) {
+            Mix_ResumeMusic();
+        }
+    }
+    Mix_Chunk* loadSound(const char* path) {
+        Mix_Chunk* gChunk = Mix_LoadWAV(path);
+        if (gChunk == nullptr) {
+            SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION,
+                           SDL_LOG_PRIORITY_ERROR,
+               "Could not load sound! SDL_mixer Error: %s", Mix_GetError());
+        }
+    }
+    void play(Mix_Chunk* gChunk) {
+        if (gChunk != nullptr) {
+            Mix_PlayChannel( -1, gChunk, 0 );
+        }
     }
 
 
