@@ -5,7 +5,7 @@ const int SCREEN_WIDTH = 960;
 const int SCREEN_HEIGHT = 522;
 const char* WINDOW_TITLE = "Jump";
 
-#define TIME_MAX 1000
+#define TIME_MAX 800
 #define GROUND 450
 #define MAX_HEIGHT 300
 
@@ -77,6 +77,23 @@ const int SLIME_CLIPS[][4] = {
 };
 const int SLIME_FRAMES = sizeof(SLIME_CLIPS)/sizeof(int)/4;
 
+const char* BUNNY_SPRITE_FILE = "imgs\\bunny.png";
+const int BUNNY_CLIPS[][4] = {
+    {0, 0, 34, 44},
+    {34, 0, 34, 44},
+    {68, 0, 34, 44},
+    {102, 0, 34, 44},
+    {136, 0, 34, 44},
+    {170, 0, 34, 44},
+    {204, 0, 34, 44},
+    {238, 0, 34, 44},
+    {272, 0, 34, 44},
+    {306, 0, 34, 44},
+    {340, 0, 34, 44},
+    {374, 0, 34, 44},
+};
+const int BUNNY_FRAMES = sizeof(BUNNY_CLIPS) / sizeof(int) / 4;
+
 const char* BANANA_SPRITE_FILE = "imgs\\banana.png";
 const int BANANA_CLIPS[][4] = {
     {0, 0, 32, 32},
@@ -98,6 +115,13 @@ const int BANANA_CLIPS[][4] = {
     {512, 0, 32, 32},
 };
 const int BANANA_FRAMES = sizeof(BANANA_CLIPS) / sizeof(int) / 4;
+
+const char* LAZER_SPRITE_FILE = "imgs\\lazer.png";
+const int LAZER_CLIPS[][4] = {
+    {0, 0, 35, 32},
+};
+const int LAZER_FRAMES = sizeof(LAZER_CLIPS) / sizeof(LAZER_CLIPS[0]);
+
 
 
 
@@ -121,8 +145,8 @@ const double LAYER_7_SPEED = 1.5;
 const double LAYER_8_SPEED = 1.75;
 
 
-#define SPEED_INCREASEMENT 2
-#define SCORE_INCREASEMENT 1
+#define SPEED_INCREASEMENT 5
+#define SCORE_INCREASEMENT 6
 #define TIME_INCREASEMENT 1
 #define FRAME_INCREASEMENT 1
 

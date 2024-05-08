@@ -4,8 +4,9 @@
 #include "defs.h"
 
 int UpdateGameTimeAndScore(int& time,
-	int& speed,
-	int& score)
+                           int& speed,
+                           int& score)
+
 {
 	if (time == TIME_MAX)
 	{

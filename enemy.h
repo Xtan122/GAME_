@@ -21,13 +21,15 @@ struct Enemy{
     int type;
     SDL_Rect* rect;
 
+    bool isDie; // set trung dan
+
     Enemy(int _type = 0) {
         posX = 0;
         posY = 0;
         E_WIDTH = 0;
         E_HEIGHT = 0;
         type = _type;
-
+        isDie = false;
         if (type == IN_AIR_ENEMY) {
 
             posX = rand() % (SCREEN_WIDTH + ENEMY_POSITION_RANGE) + SCREEN_WIDTH;
@@ -67,21 +69,18 @@ struct Enemy{
     int GetPosY() {
         return posY;
     }
-
-    int GetWidth() {
+    int GetWidth(){
         return E_WIDTH;
     }
-
-    int GetHeight() {
+    int GetHeight(){
         return E_HEIGHT;
     }
-//    Enemy(int posX, int posY) {
-//        rect.x = posX;
-//        rect.y = posY;
-//        rect.h = E_HEIGHT;
-//        rect.w = E_WIDTH;
-//    }
-
+    void SetDie(bool die) {
+        isDie = die;
+    }
+    bool IsDie() {
+        return isDie;
+    }
 };
 
 #endif // ENEMY_H_INCLUDED
