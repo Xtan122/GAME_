@@ -32,8 +32,10 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="boss.h" />
+		<Unit filename="bullet.h" />
+		<Unit filename="button.h" />
 		<Unit filename="character.h" />
+		<Unit filename="chest.h" />
 		<Unit filename="defs.h" />
 		<Unit filename="enemy.h" />
 		<Unit filename="fruit.h" />
@@ -41,7 +43,6 @@
 		<Unit filename="logic.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="menu.h" />
-		<Unit filename="timer.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

@@ -4,7 +4,9 @@
 #include "defs.h"
 #include "character.h"
 
-#define BULLET_SPEED 20
+#define BULLET_SPEED 50
+#define MAX_BULLETS 6
+
 struct Bullet {
     int posX, posY;
     int B_SPEED;
@@ -12,18 +14,19 @@ struct Bullet {
     int B_HEIGHT;
     bool isMove;
     bool isHit;
-    int B_NUMBER;
+    int currentBullets;
 
     std::vector<Bullet> bullets;
+
     Bullet() {
         posX = SCREEN_WIDTH - 700;
         posY = GROUND;
-        B_SPEED = 10;
+        B_SPEED = 20;
         B_WIDTH = 0;
         B_HEIGHT = 0;
         isMove = false;
         isHit = false;
-        B_NUMBER = 5;
+        currentBullets = 6;
     }
 
     Bullet(int x, int y, int speed, int width, int height) {
@@ -34,23 +37,26 @@ struct Bullet {
         B_HEIGHT = height;
         isMove = false;
         isHit = false;
-
+        currentBullets = 0;
     }
 
     void HandleEvent(SDL_Event& e, Character& character) {
         if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
-            switch (e.key.keysym.scancode) {
-                case SDL_SCANCODE_RIGHT:
-                    if ( B_NUMBER > 0) {
-                        B_NUMBER--;
-                        bullets.push_back(Bullet(character.posX, character.posY, B_SPEED, B_WIDTH, B_HEIGHT));
+            switch (e.key.keysym.sym) {
+                case SDLK_RIGHT:
+                    if (currentBullets > 0 && currentBullets <= MAX_BULLETS) {
+                        currentBullets--;
+                        bullets.push_back(Bullet(character.posX, character.posY + 8, B_SPEED, B_WIDTH, B_HEIGHT));
                     }
                     break;
             }
         }
     }
+
     void IncreaseBullets() {
-         B_NUMBER++;
+        if (currentBullets < MAX_BULLETS) {
+            currentBullets++;
+        }
     }
 
     void Move() {
@@ -58,20 +64,25 @@ struct Bullet {
             bullet.posX += bullet.B_SPEED;
         }
     }
+
     void SetHit(bool hit) {
         isHit = hit;
     }
+
     bool IsHit() {
         return isHit;
     }
-    int GetPosX()
-    {
+
+    int GetPosX() {
         return posX;
     }
 
-    int GetPosY()
-    {
+    int GetPosY() {
         return posY;
+    }
+    void Reset() {
+        currentBullets = 6;
+        bullets.clear();
     }
 };
 

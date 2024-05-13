@@ -120,10 +120,10 @@ struct Graphics {
 
     }
 
-	void prepareScene(SDL_Texture * background)
+	void prepareScene(SDL_Texture * background = nullptr)
     {
         SDL_RenderClear(renderer);
-        SDL_RenderCopy( renderer, background, NULL, NULL);
+        if(background != nullptr) {SDL_RenderCopy( renderer, background, NULL, NULL);}
     }
 
     void presentScene()

@@ -7,6 +7,7 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 #include <algorithm>
+#include <fstream>
 
 
 
@@ -18,6 +19,8 @@
 #include "menu.h"
 #include "fruit.h"
 #include "bullet.h"
+#include "chest.h"
+#include "button.h"
 
 
 
@@ -33,7 +36,23 @@ void waitUntilKeyPressed()
         SDL_Delay(100);
     }
 }
+void saveHighscore(int highscore) {
+    std::ofstream file("highscore.txt");
+    if (file.is_open()) {
+        file << highscore;
+        file.close();
+    }
+}
 
+int loadHighscore() {
+    int highscore = 0;
+    std::ifstream file("highscore.txt");
+    if (file.is_open()) {
+        file >> highscore;
+        file.close();
+    }
+    return highscore;
+}
 
 
 
@@ -42,16 +61,18 @@ int main(int argc, char *argv[])
     srand(time(NULL));
     int time = 0;
     int score = 0;
+    int highscore = loadHighscore();
     int acceleration = 0;
     int energy = 0;
 
     Graphics graphics;
     graphics.init();
-    Mix_Music *gMusic = graphics.loadMusic("asset\\duoitoasenvang.mp3");
+    Mix_Music *gMusic = graphics.loadMusic("asset\\nen.mp3");
     graphics.play(gMusic);
     Mix_Chunk *gJump = graphics.loadSound("asset\\jump.mp3");
     Mix_Chunk *gDead = graphics.loadSound("asset\\death.wav");
     Mix_Chunk *gShoot = graphics.loadSound("asset\\bandan.mp3");
+    Mix_Chunk *gEat = graphics.loadSound("asset\\eat.mp3");
 
 
     ScrollingGround ground; ground.setTexture(graphics.loadTexture("imgs/ground.png"));
@@ -64,6 +85,14 @@ int main(int argc, char *argv[])
     layer6.setTexture(graphics.loadTexture(LAYER6_FILE));
     layer7.setTexture(graphics.loadTexture(LAYER7_FILE));
     layer8.setTexture(graphics.loadTexture(LAYER8_FILE));
+
+    SDL_Texture* battery0 = graphics.loadTexture(BATTERY_0);
+    SDL_Texture* battery1 = graphics.loadTexture(BATTERY_1);
+    SDL_Texture* battery2 = graphics.loadTexture(BATTERY_2);
+    SDL_Texture* battery3 = graphics.loadTexture(BATTERY_3);
+    SDL_Texture* battery4 = graphics.loadTexture(BATTERY_4);
+    SDL_Texture* battery5 = graphics.loadTexture(BATTERY_5);
+    SDL_Texture* battery6 = graphics.loadTexture(BATTERY_6);
 
     Character character;
     Sprite frog;
@@ -98,49 +127,92 @@ int main(int argc, char *argv[])
     SDL_Texture* bunnyTexture = graphics.loadTexture(BUNNY_SPRITE_FILE);
     bunny.init(bunnyTexture, BUNNY_FRAMES, BUNNY_CLIPS);
 
-    Fruit fruit;
+    Fruit fruit1(IN_AIR_FRUIT);
+    Fruit fruit2(ON_GROUND_FRUIT);
+
     Sprite banana;
     SDL_Texture* bananaTexture = graphics.loadTexture(BANANA_SPRITE_FILE);
     banana.init(bananaTexture, BANANA_FRAMES, BANANA_CLIPS);
+
+    Sprite pineapple;
+    SDL_Texture* pineappleTexture = graphics.loadTexture(PINEAPPLE_SPRITE_FILE);
+    pineapple.init(pineappleTexture, PINEAPPLE_FRAMES, PINEAPPLE_CLIPS);
+
+    Chest chest;
+    Sprite box;
+    SDL_Texture* boxTexture = graphics.loadTexture(BOX_SPRITE_FILE);
+    box.init(boxTexture, BOX_FRAMES, BOX_CLIPS);
 
 
     TTF_Font* font = graphics.loadFont("asset/Roboto-Black.ttf", 26);
     SDL_Color color = {255, 255, 0, 0};
     SDL_Texture* scoreText = graphics.renderText(to_string(score).c_str(), font, color);
-    SDL_Texture* energyText = graphics.renderText(to_string(bullet.B_NUMBER).c_str(), font, color);
+    SDL_Texture* SCOREText = graphics.renderText("SCORE", font, color);
+
+    SDL_Texture* energyText = graphics.renderText(to_string(bullet.currentBullets).c_str(), font, color);
+    SDL_Texture* highscoreText = graphics.renderText(to_string(score).c_str(), font, color);
+    SDL_Texture* HightscoreText = graphics.renderText("HIGHSCORE", font, color);
+
 
 
     bool quit = false;
     bool gameOver = false;
     bool isEaten = false;
-    bool delay = false;
-    int Game_State = 1 ;
+    //bool delay = false;
+    int Game_State = 0;
+    bool die = false;
+
+    SDL_Texture* menuTexture = graphics.loadTexture(MENU_TEXTURE_FILE);
+    SDL_Texture* endTexture = graphics.loadTexture(END_TEXTURE_FILE);
+//    Button startButton;
+//    Button volumnButton;
+//
+//    SDL_Texture* startTexture = graphics.loadTexture("imgs/menu/start.png");
+//    SDL_Texture* volumnOnTexture = graphics.loadTexture("imgs/menu/volumn_on.png");
+//    SDL_Texture* volumnOffTexture = graphics.loadTexture("imgs/menu/volumn_off.png");
 
     SDL_Event event;
-
     while (!quit) {
-        if(Game_State == 0){}
 
+        if (Game_State == 0) {
+            graphics.prepareScene(menuTexture);
+            //graphics.renderTexture(startTexture, 200, 200);
 
-        if(Game_State == 1){
+            SDL_Event e;
+            while (SDL_PollEvent(&e) != 0) {
+            if (e.type == SDL_KEYDOWN) {
+                if (e.key.keysym.sym == SDLK_SPACE) {
+                    Game_State = 1;
+                    break;
+                } else if (e.key.keysym.sym == SDLK_ESCAPE) {
+                    quit = true;
+                }
+            }
+        }
+
+        graphics.presentScene();
+        }
+
+        else if (Game_State == 1 && !die) {
             int staticks = SDL_GetTicks64();
             int fps  = 30;
             UpdateGameTimeAndScore(time, acceleration, score);
             while (SDL_PollEvent(&event) != 0) {
                 if (event.type == SDL_QUIT){
-                        quit = true;
+                    quit = true;
                 }
                 character.HandleEvent(event);
                 bullet.HandleEvent(event, character);
                 const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
                 if (currentKeyStates[SDL_SCANCODE_SPACE]) graphics.play(gJump);
-                if (currentKeyStates[SDL_SCANCODE_RIGHT]) graphics.play(gShoot);
+                if (currentKeyStates[SDL_SCANCODE_RIGHT] && bullet.currentBullets > 0) graphics.play(gShoot);
             }
-            graphics.prepareScene();
+            //graphics.prepareScene();
 
             frog.tick(); lazer.tick();
             chameleon.tick(); bat.tick(); slime.tick(); bunny.tick();
-            banana.tick();
+            banana.tick(); pineapple.tick();
+            box.tick();
 
             layer1.scroll(LAYER_1_SPEED); graphics.render(layer1);
             layer2.scroll(LAYER_2_SPEED); graphics.render(layer2);
@@ -170,9 +242,15 @@ int main(int argc, char *argv[])
             SDL_Rect* enemy4_rect = bunny.getCurrentClip();
             SDL_Rect enemy4Rect = {enemy4.GetPosX(), enemy4.GetPosY() + 10, enemy4_rect->w , enemy4_rect->h };
 
-            SDL_Rect* fruit_rect = banana.getCurrentClip();
-            SDL_Rect fruitRect = {fruit.GetPosX(), fruit.GetPosY() - 20, fruit_rect->w - 6, fruit_rect->h - 8};
+            SDL_Rect* fruit1_rect = banana.getCurrentClip();
+            SDL_Rect fruit1Rect = {fruit1.GetPosX(), fruit1.GetPosY() - 20, fruit1_rect->w - 6, fruit1_rect->h - 8};
 
+            SDL_Rect* fruit2_rect = pineapple.getCurrentClip();
+            SDL_Rect fruit2Rect = {fruit2.GetPosX() , fruit2.GetPosY(), fruit2_rect->w, fruit2_rect->h};
+
+
+            SDL_Rect* chest_rect = box.getCurrentClip();
+            SDL_Rect chestRect = {chest.GetPosX() + 30, chest.GetPosY() + 15, chest_rect->w - 50, chest_rect->h + 15};
 
 
             character.Jump();
@@ -184,10 +262,14 @@ int main(int argc, char *argv[])
 
 
 
-            if (fruit.IsEaten()) {
-                fruit = Fruit();
-                fruit.SetEaten(false);
+            if (fruit1.IsEaten()) { fruit1 = Fruit(IN_AIR_FRUIT);    fruit1.SetEaten(false);}
+            if (fruit2.IsEaten()) { fruit2 = Fruit(ON_GROUND_FRUIT); fruit2.SetEaten(false);}
+            if(score >= 700) { fruit1.Move(0); graphics.render(fruit1.posX, fruit1.posY, banana);}
+            if(score >= 1200){ fruit2.Move(0); graphics.render(fruit2.posX, fruit2.posY + 8, pineapple);}
 
+            if(chest.IsOpen()) {
+                chest = Chest();
+                chest.SetOpen(false);
             }
             if(enemy1.IsDie()){ enemy1 = Enemy(ON_GROUND_ENEMY); enemy1.SetDie(false);}
             if(enemy2.IsDie()){ enemy2 = Enemy(IN_AIR_ENEMY);    enemy2.SetDie(false);}
@@ -201,27 +283,39 @@ int main(int argc, char *argv[])
             bullet.Move();
             for (auto& bullet : bullet.bullets) { graphics.render(bullet.posX, bullet.posY, lazer);} // Vẽ đạn
 
-            updateScoreText(graphics, font, score, color, scoreText);
-            graphics.renderTexture(scoreText, 890, 20);
-
-            updateScoreText(graphics, font, bullet.B_NUMBER, color, scoreText);
-            graphics.renderTexture(scoreText, 20, 20);
-
-            fruit.Move(0); graphics.render(fruit.posX, fruit.posY, banana);
-
+            //if(score >= 0){ chest.Move(acceleration);      graphics.render(chest.posX, chest.posY + 10, box);}
             if(checkCollision(characterRect, enemy1Rect) || checkCollision(characterRect, enemy2Rect) || checkCollision(characterRect, enemy3Rect) || checkCollision(characterRect, enemy4Rect)){
                 graphics.play(gDead);
-                delay = true;
-            }
-            if(delay){
-                SDL_Delay(10000);
-            }
+                die = true;
+                Game_State = 2;
+                //delay = true;
 
-            if (checkCollision(characterRect, fruitRect)) {
-                graphics.play(gJump);
-                fruit.SetEaten(true);
+            }
+//            if(delay){
+//                SDL_Delay(10000);
+//            }
+
+            if (checkCollision(characterRect, fruit1Rect)) {
+                graphics.play(gEat);
+                fruit1.SetEaten(true);
                 energy ++;
                 bullet.IncreaseBullets();
+
+            }
+            switch(bullet.currentBullets){
+                    case 0: graphics.renderTexture(battery0, 20, 20); break;
+                    case 1: graphics.renderTexture(battery1, 20, 20); break;
+                    case 2: graphics.renderTexture(battery2, 20, 20); break;
+                    case 3: graphics.renderTexture(battery3, 20, 20); break;
+                    case 4: graphics.renderTexture(battery4, 20, 20); break;
+                    case 5: graphics.renderTexture(battery5, 20, 20); break;
+                    case 6: graphics.renderTexture(battery6, 20, 20); break;
+                    default: break;
+                }
+            if (checkCollision(characterRect, fruit2Rect)) {
+                graphics.play(gEat);
+                fruit2.SetEaten(true);
+                if(acceleration >= 3){ acceleration--;}
             }
 
             for (auto& bullet : bullet.bullets) {
@@ -234,6 +328,15 @@ int main(int argc, char *argv[])
             }
 
             bullet.bullets.erase(std::remove_if(bullet.bullets.begin(), bullet.bullets.end(), [](Bullet& b) { return b.IsHit(); }), bullet.bullets.end());
+            if (score > highscore) { highscore = score; saveHighscore(highscore);}
+            updateScoreText(graphics, font, score, color, scoreText);
+            graphics.renderTexture(scoreText, 890, 20);
+
+            updateScoreText(graphics, font, highscore, color, scoreText);
+            graphics.renderTexture(scoreText, 890, 60);
+
+            updateScoreText(graphics, font, bullet.currentBullets, color, scoreText);
+            graphics.renderTexture(scoreText, 20, 20);
 
             graphics.presentScene();
             int frame_stick = SDL_GetTicks64() - staticks;
@@ -241,9 +344,37 @@ int main(int argc, char *argv[])
                 SDL_Delay(1000/fps - frame_stick);
             }
         }
+        else if (Game_State == 2) {
+            graphics.prepareScene(endTexture);
+            SDL_Event end_event;
+            while (SDL_PollEvent(&end_event) != 0) {
+                if (end_event.type == SDL_KEYDOWN) {
+                    if (end_event.key.keysym.sym == SDLK_SPACE) {
+                        score = 0;
+                        acceleration = 0;
+                        character.Reset();
 
+                        enemy1.Reset();
+                        enemy2.Reset();
+                        enemy3.Reset();
+                        enemy4.Reset();
+                        bullet.Reset();
+                        die = false;
+                        Game_State = 1;
 
+                        break;
+                    } else if (end_event.key.keysym.sym == SDLK_ESCAPE) {
+                    quit = true;
+                    }
+                }
+            }
+        graphics.presentScene();
     }
+
+}
+
+
+
 
     SDL_DestroyTexture( ground.texture    );
     SDL_DestroyTexture( character.texture );
@@ -253,7 +384,7 @@ int main(int argc, char *argv[])
     SDL_DestroyTexture( slimeTexture      ); slimeTexture = nullptr;
     SDL_DestroyTexture( bunnyTexture      ); bunnyTexture = nullptr;
     SDL_DestroyTexture( bananaTexture     ); bananaTexture = nullptr;
-
+    SDL_DestroyTexture( pineappleTexture  ); pineappleTexture = nullptr;
 
     graphics.quit();
     return 0;

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1715195818 source:f:\bt 01 - hk2\game_\main.cpp
+1715628998 source:f:\bt 01 - hk2\game_\main.cpp
 	<iostream>
 	<cstdlib>
 	<ctime>
@@ -9,6 +9,7 @@
 	<SDL_ttf.h>
 	<SDL_mixer.h>
 	<algorithm>
+	<fstream>
 	"defs.h"
 	"grp.h"
 	"character.h"
@@ -17,10 +18,12 @@
 	"menu.h"
 	"fruit.h"
 	"bullet.h"
+	"chest.h"
+	"button.h"
 
-1715197649 f:\bt 01 - hk2\game_\defs.h
+1715628998 f:\bt 01 - hk2\game_\defs.h
 
-1715153241 f:\bt 01 - hk2\game_\grp.h
+1715263266 f:\bt 01 - hk2\game_\grp.h
 	<vector>
 	"defs.h"
 	<cstring>
@@ -29,7 +32,7 @@
 	<SDL_image.h>
 	"character.h"
 
-1715178986 f:\bt 01 - hk2\game_\character.h
+1715626466 f:\bt 01 - hk2\game_\character.h
 	<SDL_image.h>
 	"defs.h"
 	"grp.h"
@@ -37,7 +40,7 @@
 	"logic.h"
 	<iostream>
 
-1715187778 f:\bt 01 - hk2\game_\enemy.h
+1715624505 f:\bt 01 - hk2\game_\enemy.h
 	"defs.h"
 	<cstdlib>
 	<ctime>
@@ -46,15 +49,25 @@
 	"character.h"
 	"enemy.h"
 
-1715154645 f:\bt 01 - hk2\game_\menu.h
+1715281310 f:\bt 01 - hk2\game_\menu.h
 	"defs.h"
+	"Button.h"
 
-1715114632 f:\bt 01 - hk2\game_\fruit.h
+1715221597 f:\bt 01 - hk2\game_\fruit.h
 	"defs.h"
 	<cstdlib>
 	<ctime>
 
-1715195109 f:\bt 01 - hk2\game_\bullet.h
+1715628998 f:\bt 01 - hk2\game_\bullet.h
 	"defs.h"
 	"character.h"
+
+1715217806 f:\bt 01 - hk2\game_\chest.h
+	"defs.h"
+	<cstdlib>
+	<ctime>
+
+1715281310 f:\bt 01 - hk2\game_\button.h
+	"defs.h"
+	"grp.h"
 

@@ -9,29 +9,41 @@
 #define FRUIT_MAX_HEIGHT 300
 #define FRUIT_MIN_HEIGHT 330
 #define FRUIT_POSITION_RANGE 250
-
+#define FRUIT1_RANGE 100
+#define FRUIT2_RANGE 250
+#define FRUIT3_RANGE 500
 
 struct Fruit{
     int posX;
     int posY;
     int F_WIDTH;
     int F_HEIGHT;
+    int type;
     bool isEaten;
 
-    Fruit() {
+    Fruit(int _type = 0) {
         posX = 0;
         posY = 0;
         F_WIDTH = 0;
         F_HEIGHT = 0;
-        posX = rand() % (SCREEN_WIDTH + FRUIT_POSITION_RANGE) + SCREEN_WIDTH;
-        posY = rand() % (FRUIT_MAX_HEIGHT - FRUIT_MIN_HEIGHT + 1) + FRUIT_MIN_HEIGHT;
+        type = _type;
         isEaten = false;
+        if (type == IN_AIR_FRUIT) {
+            posX = rand() % (SCREEN_WIDTH + FRUIT_POSITION_RANGE) + SCREEN_WIDTH;
+            posY = rand() % (FRUIT_MAX_HEIGHT - FRUIT_MIN_HEIGHT + 1) + FRUIT_MIN_HEIGHT;
+        } else if (type == ON_GROUND_FRUIT) {
+            posX = rand() % (SCREEN_WIDTH + FRUIT_POSITION_RANGE) + SCREEN_WIDTH;
+            posY = GROUND - 8; // Thay GROUND thành tên biến hoặc giá trị cụ thể của độ cao trên mặt đất
+        }
+
     }
     void Move(const int &acceleration) {
         posX += -(FRUIT_SPEED + acceleration);
         if (posX + MAX_FRUIT_WIDTH < 0) {
             posX = rand() % (SCREEN_WIDTH + FRUIT_POSITION_RANGE) + SCREEN_WIDTH;
-            posY = rand() % (FRUIT_MAX_HEIGHT - FRUIT_MIN_HEIGHT + 1) + FRUIT_MIN_HEIGHT;
+            if (type == IN_AIR_FRUIT) {
+                    posY = rand() % (FRUIT_MAX_HEIGHT - FRUIT_MIN_HEIGHT + 1) + FRUIT_MIN_HEIGHT;
+            }
         }
     }
 

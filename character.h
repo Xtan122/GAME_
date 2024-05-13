@@ -50,9 +50,9 @@ struct Character
 {
     if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
     {
-        switch (e.key.keysym.scancode)
+        switch (e.key.keysym.sym)
         {
-            case SDL_SCANCODE_SPACE :
+            case SDLK_SPACE :
             {
                 if (OnGround())
                 {
@@ -95,6 +95,12 @@ struct Character
     {
         return posY;
     }
+    void Reset() {
+        posX = SCREEN_WIDTH - 700;
+        posY = GROUND;
+        status = 0;
+    }
+
 
 
 };

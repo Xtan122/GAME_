@@ -81,6 +81,17 @@ struct Enemy{
     bool IsDie() {
         return isDie;
     }
+
+    void Reset() {
+        isDie = false;
+        if (type == IN_AIR_ENEMY) {
+            posX = rand() % (SCREEN_WIDTH + ENEMY_POSITION_RANGE) + SCREEN_WIDTH;
+            posY = rand() % (ENEMY_MAX_HEIGHT - ENEMY_MIN_HEIGHT + 1) + ENEMY_MIN_HEIGHT;
+        } else if (type == ON_GROUND_ENEMY) {
+            posX = rand() % (SCREEN_WIDTH + ENEMY_POSITION_RANGE) + SCREEN_WIDTH;
+            posY = GROUND - 8;
+        }
+    }
 };
 
 #endif // ENEMY_H_INCLUDED

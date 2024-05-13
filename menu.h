@@ -2,6 +2,7 @@
 #define MENU_H_INCLUDED
 
 #include "defs.h"
+#include "Button.h"
 
 int UpdateGameTimeAndScore(int& time,
                            int& speed,
@@ -26,5 +27,7 @@ int UpdateGameTimeAndScore(int& time,
 
 	return time;
 }
+
+
 
 #endif // MENU_H_INCLUDED

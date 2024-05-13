@@ -12,12 +12,18 @@ const char* WINDOW_TITLE = "Jump";
 #define IN_AIR_ENEMY 1
 #define ON_GROUND_ENEMY 0
 
+#define IN_AIR_FRUIT 1
+#define ON_GROUND_FRUIT 0
+
 #define GROUND_SPEED 5
 #define ENEMY_SPEED 10
 #define MAX_ENEMY_WIDTH 100
 
 #define FRUIT_SPEED 7
 #define MAX_FRUIT_WIDTH 100
+
+#define CHEST_SPEED 5
+#define MAX_CHEST_WIDTH 100
 
 const char* FROG_SPRITE_FILE = "imgs\\runn.png";
 const int FROG_CLIPS[][4] = {
@@ -116,11 +122,43 @@ const int BANANA_CLIPS[][4] = {
 };
 const int BANANA_FRAMES = sizeof(BANANA_CLIPS) / sizeof(int) / 4;
 
-const char* LAZER_SPRITE_FILE = "imgs\\lazer.png";
+const char* PINEAPPLE_SPRITE_FILE = "imgs\\pineapple.png";
+
+const int PINEAPPLE_CLIPS[][4] = {
+    {0, 0, 32, 32},
+    {32, 0, 32, 32},
+    {64, 0, 32, 32},
+    {96, 0, 32, 32},
+    {128, 0, 32, 32},
+    {160, 0, 32, 32},
+    {192, 0, 32, 32},
+    {224, 0, 32, 32},
+    {256, 0, 32, 32},
+    {288, 0, 32, 32},
+    {320, 0, 32, 32},
+    {352, 0, 32, 32},
+    {384, 0, 32, 32},
+    {416, 0, 32, 32},
+    {448, 0, 32, 32},
+    {480, 0, 32, 32},
+    {512, 0, 32, 32},
+};
+
+const int PINEAPPLE_FRAMES = sizeof(PINEAPPLE_CLIPS) / sizeof(int) / 4;
+
+
+const char* BOX_SPRITE_FILE = "imgs\\barrel.png";
+const int BOX_CLIPS[][4] = {
+    {0, 0, 28, 30},
+};
+const int BOX_FRAMES = sizeof(BOX_CLIPS) / sizeof(BOX_CLIPS[0]);
+
+const char* LAZER_SPRITE_FILE = "imgs\\kunai.png";
 const int LAZER_CLIPS[][4] = {
-    {0, 0, 35, 32},
+    {0, 0, 50, 16},
 };
 const int LAZER_FRAMES = sizeof(LAZER_CLIPS) / sizeof(LAZER_CLIPS[0]);
+
 
 
 
@@ -149,5 +187,33 @@ const double LAYER_8_SPEED = 1.75;
 #define SCORE_INCREASEMENT 6
 #define TIME_INCREASEMENT 1
 #define FRAME_INCREASEMENT 1
+
+#define SMALL_BUTTON 1
+#define COMMON_BUTTON 2
+
+const int COMMON_BUTTON_WIDTH = 150;
+const int COMMON_BUTTON_HEIGHT = 98;
+const int SMALL_BUTTON_WIDTH = 22;
+const int SMALL_BUTTON_HEIGHT = 34;
+enum ButtonSprite
+{
+	BUTTON_MOUSE_OUT = 0,
+	BUTTON_MOUSE_OVER = 1,
+	BUTTON_TOTAL = 2
+};
+
+
+const char* MENU_TEXTURE_FILE = "imgs/menu/1.png";
+const char* END_TEXTURE_FILE = "imgs/menu/2.png";
+
+const char* BATTERY_0 = "imgs/bullet/0.png";
+const char* BATTERY_1 = "imgs/bullet/1.png";
+const char* BATTERY_2 = "imgs/bullet/2.png";
+const char* BATTERY_3 = "imgs/bullet/3.png";
+const char* BATTERY_4 = "imgs/bullet/4.png";
+const char* BATTERY_5 = "imgs/bullet/5.png";
+const char* BATTERY_6 = "imgs/bullet/6.png";
+
+
 
 #endif // DEFS_H_INCLUDED
