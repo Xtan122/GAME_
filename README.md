@@ -1,4 +1,4 @@
-CITY JUMP
+**CITY JUMP**
 
 1. Cách lấy chương trình và chạy chương trình:
 
