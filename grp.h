@@ -36,6 +36,18 @@ struct Sprite {
         return &(clips[currentFrame]);
     }
 };
+void waitUntilKeyPressed()
+{
+    SDL_Event e;
+    while (true) {
+        if ( SDL_PollEvent(&e) != 0 &&
+             (e.type == SDL_KEYDOWN || e.type == SDL_QUIT) )
+            return;
+        SDL_Delay(100);
+    }
+}
+
+
 
 
 struct ScrollingGround {
@@ -243,10 +255,27 @@ struct Graphics {
                            SDL_LOG_PRIORITY_ERROR,
                "Could not load sound! SDL_mixer Error: %s", Mix_GetError());
         }
+        return gChunk;
     }
     void play(Mix_Chunk* gChunk) {
         if (gChunk != nullptr) {
             Mix_PlayChannel( -1, gChunk, 0 );
+        }
+    }
+    void stop(Mix_Music *gMusic) {
+        if (gMusic == nullptr) return;
+
+            Mix_PauseMusic();
+    }
+    bool soundEnabled = true;
+    void toggleSound() {
+        soundEnabled = !soundEnabled;
+        if (soundEnabled) {
+            // Bật âm thanh
+            Mix_VolumeMusic(MIX_MAX_VOLUME);
+        } else {
+            // Tắt âm thanh
+            Mix_VolumeMusic(0);
         }
     }
 

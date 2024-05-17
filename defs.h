@@ -19,11 +19,11 @@ const char* WINDOW_TITLE = "Jump";
 #define ENEMY_SPEED 10
 #define MAX_ENEMY_WIDTH 100
 
+#define BOSS_SPEED 2
+#define MAX_BOSS_WIDTH 100
+
 #define FRUIT_SPEED 7
 #define MAX_FRUIT_WIDTH 100
-
-#define CHEST_SPEED 5
-#define MAX_CHEST_WIDTH 100
 
 const char* FROG_SPRITE_FILE = "imgs\\runn.png";
 const int FROG_CLIPS[][4] = {
@@ -100,6 +100,21 @@ const int BUNNY_CLIPS[][4] = {
 };
 const int BUNNY_FRAMES = sizeof(BUNNY_CLIPS) / sizeof(int) / 4;
 
+const char* GUARDIAN_SPRITE_FILE = "imgs\\guardian.png";
+const int GUARDIAN_CLIPS[][4] = {
+    {0, 0, 192, 128},
+    {192, 0, 192, 128},
+    {384, 0, 192, 128},
+    {576, 0, 192, 128},
+    {768, 0, 192, 128},
+    {960, 0, 192, 128},
+    {1152, 0, 192, 128},
+    {1344, 0, 192, 128},
+    {1536, 0, 192, 128},
+    {1728, 0, 192, 128}
+};
+const int GUARDIAN_FRAMES = sizeof(GUARDIAN_CLIPS) / sizeof(GUARDIAN_CLIPS[0]);
+
 const char* BANANA_SPRITE_FILE = "imgs\\banana.png";
 const int BANANA_CLIPS[][4] = {
     {0, 0, 32, 32},
@@ -147,12 +162,6 @@ const int PINEAPPLE_CLIPS[][4] = {
 const int PINEAPPLE_FRAMES = sizeof(PINEAPPLE_CLIPS) / sizeof(int) / 4;
 
 
-const char* BOX_SPRITE_FILE = "imgs\\barrel.png";
-const int BOX_CLIPS[][4] = {
-    {0, 0, 28, 30},
-};
-const int BOX_FRAMES = sizeof(BOX_CLIPS) / sizeof(BOX_CLIPS[0]);
-
 const char* LAZER_SPRITE_FILE = "imgs\\kunai.png";
 const int LAZER_CLIPS[][4] = {
     {0, 0, 50, 16},
@@ -163,14 +172,20 @@ const int LAZER_FRAMES = sizeof(LAZER_CLIPS) / sizeof(LAZER_CLIPS[0]);
 
 
 
-const char* LAYER1_FILE = "imgs/background/1.png";
-const char* LAYER2_FILE = "imgs/background/2.png";
-const char* LAYER3_FILE = "imgs/background/3.png";
-const char* LAYER4_FILE = "imgs/background/4.png";
-const char* LAYER5_FILE = "imgs/background/5.png";
-const char* LAYER6_FILE = "imgs/background/6.png";
-const char* LAYER7_FILE = "imgs/background/7.png";
-const char* LAYER8_FILE = "imgs/background/8.png";
+const char* LAYER1_FILE = "imgs/background/background1/1.png";
+const char* LAYER2_FILE = "imgs/background/background1/2.png";
+const char* LAYER3_FILE = "imgs/background/background1/3.png";
+const char* LAYER4_FILE = "imgs/background/background1/4.png";
+const char* LAYER5_FILE = "imgs/background/background1/5.png";
+const char* LAYER6_FILE = "imgs/background/background1/6.png";
+const char* LAYER7_FILE = "imgs/background/background1/7.png";
+const char* LAYER8_FILE = "imgs/background/background1/8.png";
+const char* LAYER9_FILE = "imgs/background/background1/9.png";
+const char* LAYER10_FILE = "imgs/background/background1/10.png";
+const char* LAYER11_FILE = "imgs/background/background1/11.png";
+const char* LAYER12_FILE = "imgs/background/background1/12.png";
+const char* LAYER13_FILE = "imgs/background/background1/13.png";
+
 
 
 const double LAYER_1_SPEED = 0.0;
@@ -181,30 +196,17 @@ const double LAYER_5_SPEED = 1.0;
 const double LAYER_6_SPEED = 1.25;
 const double LAYER_7_SPEED = 1.5;
 const double LAYER_8_SPEED = 1.75;
-
+const double LAYER_9_SPEED = 2.0;
+const double LAYER_10_SPEED = 2.25;
+const double LAYER_11_SPEED = 2.5;
+const double LAYER_12_SPEED = 2.75;
+const double LAYER_13_SPEED = 3.0;
 
 #define SPEED_INCREASEMENT 5
 #define SCORE_INCREASEMENT 6
 #define TIME_INCREASEMENT 1
 #define FRAME_INCREASEMENT 1
 
-#define SMALL_BUTTON 1
-#define COMMON_BUTTON 2
-
-const int COMMON_BUTTON_WIDTH = 150;
-const int COMMON_BUTTON_HEIGHT = 98;
-const int SMALL_BUTTON_WIDTH = 22;
-const int SMALL_BUTTON_HEIGHT = 34;
-enum ButtonSprite
-{
-	BUTTON_MOUSE_OUT = 0,
-	BUTTON_MOUSE_OVER = 1,
-	BUTTON_TOTAL = 2
-};
-
-
-const char* MENU_TEXTURE_FILE = "imgs/menu/1.png";
-const char* END_TEXTURE_FILE = "imgs/menu/2.png";
 
 const char* BATTERY_0 = "imgs/bullet/0.png";
 const char* BATTERY_1 = "imgs/bullet/1.png";
@@ -213,6 +215,8 @@ const char* BATTERY_3 = "imgs/bullet/3.png";
 const char* BATTERY_4 = "imgs/bullet/4.png";
 const char* BATTERY_5 = "imgs/bullet/5.png";
 const char* BATTERY_6 = "imgs/bullet/6.png";
+const char* BATTERY_7 = "imgs/bullet/7.png";
+const char* BATTERY_8 = "imgs/bullet/8.png";
 
 
 

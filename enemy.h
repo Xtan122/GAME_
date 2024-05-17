@@ -30,6 +30,7 @@ struct Enemy{
         E_HEIGHT = 0;
         type = _type;
         isDie = false;
+        srand(time(NULL));
         if (type == IN_AIR_ENEMY) {
 
             posX = rand() % (SCREEN_WIDTH + ENEMY_POSITION_RANGE) + SCREEN_WIDTH;

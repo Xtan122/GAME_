@@ -5,7 +5,7 @@
 #include "character.h"
 
 #define BULLET_SPEED 50
-#define MAX_BULLETS 6
+#define MAX_BULLETS 8
 
 struct Bullet {
     int posX, posY;
