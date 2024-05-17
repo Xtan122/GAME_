@@ -3,7 +3,7 @@
 
 const int SCREEN_WIDTH = 960;
 const int SCREEN_HEIGHT = 522;
-const char* WINDOW_TITLE = "Jump";
+const char* WINDOW_TITLE = "CITY JUMP";
 
 #define TIME_MAX 800
 #define GROUND 450

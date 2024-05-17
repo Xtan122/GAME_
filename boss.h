@@ -22,7 +22,7 @@ struct Boss {
         BOSS_HEIGHT = 0;
         hitCounter = 0;
         isDie = false;
-        //BossTexture = nullptr; // Uncomment and initialize if using textures
+
     }
 
     void Move(const int &acceleration) {

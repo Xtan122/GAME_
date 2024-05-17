@@ -284,7 +284,7 @@ struct Graphics {
 
 void updateScoreText(Graphics& graphics, TTF_Font* font, int score, SDL_Color color, SDL_Texture*& scoreText) {
     if (scoreText) {
-        SDL_DestroyTexture(scoreText); // Xóa texture cũ
+        SDL_DestroyTexture(scoreText);
         scoreText = nullptr;
     }
 

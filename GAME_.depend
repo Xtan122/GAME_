@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1715925779 source:f:\bt 01 - hk2\game_\main.cpp
+1715927847 source:f:\bt 01 - hk2\game_\main.cpp
 	<iostream>
 	<cstdlib>
 	<ctime>
@@ -19,9 +19,9 @@
 	"bullet.h"
 	"boss.h"
 
-1715925661 f:\bt 01 - hk2\game_\defs.h
+1715927005 f:\bt 01 - hk2\game_\defs.h
 
-1715925661 f:\bt 01 - hk2\game_\grp.h
+1715927415 f:\bt 01 - hk2\game_\grp.h
 	<vector>
 	"defs.h"
 	<cstring>
@@ -38,7 +38,7 @@
 	"logic.h"
 	<iostream>
 
-1715790101 f:\bt 01 - hk2\game_\enemy.h
+1715927415 f:\bt 01 - hk2\game_\enemy.h
 	"defs.h"
 	<cstdlib>
 	<ctime>
@@ -53,7 +53,7 @@
 	<vector>
 	<SDL.h>
 
-1715221597 f:\bt 01 - hk2\game_\fruit.h
+1715927415 f:\bt 01 - hk2\game_\fruit.h
 	"defs.h"
 	<cstdlib>
 	<ctime>
@@ -71,7 +71,7 @@
 	"defs.h"
 	"grp.h"
 
-1715657394 f:\bt 01 - hk2\game_\boss.h
+1715927415 f:\bt 01 - hk2\game_\boss.h
 	"defs.h"
 	<cstdlib>
 	<ctime>

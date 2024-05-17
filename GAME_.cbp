@@ -34,7 +34,6 @@
 		</Compiler>
 		<Unit filename="boss.h" />
 		<Unit filename="bullet.h" />
-		<Unit filename="button.h" />
 		<Unit filename="character.h" />
 		<Unit filename="defs.h" />
 		<Unit filename="enemy.h" />
@@ -42,7 +41,6 @@
 		<Unit filename="grp.h" />
 		<Unit filename="logic.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="menu.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

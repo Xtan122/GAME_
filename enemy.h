@@ -9,9 +9,7 @@
 #define ENEMY_MAX_HEIGHT 300
 #define ENEMY_MIN_HEIGHT 330
 #define ENEMY_POSITION_RANGE 250
-#define ENEMY1_RANGE 100
-#define ENEMY2_RANGE 250
-#define ENEMY3_RANGE 500
+
 
 struct Enemy{
     int posX;
@@ -21,7 +19,7 @@ struct Enemy{
     int type;
     SDL_Rect* rect;
 
-    bool isDie; // set trung dan
+    bool isDie;
 
     Enemy(int _type = 0) {
         posX = 0;
@@ -39,14 +37,14 @@ struct Enemy{
             posX = rand() % (SCREEN_WIDTH + ENEMY_POSITION_RANGE) + SCREEN_WIDTH;
             posY = GROUND - 8;
         }
-        //EnemyTexture = nullptr;
+
     }
     void Move(const int &acceleration) {
-        posX += -(ENEMY_SPEED + acceleration); //Cập nhật vị trí theo hướng ngược lại của tốc độ di chuyển của kẻ địch.
+        posX += -(ENEMY_SPEED + acceleration);
         if (posX + MAX_ENEMY_WIDTH < 0) {
-            posX = rand() % (SCREEN_WIDTH + ENEMY_POSITION_RANGE) + SCREEN_WIDTH; //đảm bảo kẻ địch xuất hiện bên phải màn hình ngoài màn hình
+            posX = rand() % (SCREEN_WIDTH + ENEMY_POSITION_RANGE) + SCREEN_WIDTH;
             if (type == IN_AIR_ENEMY) {
-                posY = rand() % (ENEMY_MAX_HEIGHT - ENEMY_MIN_HEIGHT + 1) + ENEMY_MIN_HEIGHT; //đảm bảo xuất hiện trong không trung.
+                posY = rand() % (ENEMY_MAX_HEIGHT - ENEMY_MIN_HEIGHT + 1) + ENEMY_MIN_HEIGHT;
             }
         }
     }
